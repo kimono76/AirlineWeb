@@ -1,4 +1,5 @@
 using AirlineWeb.Data;
+using AirlineWeb.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AirlineWeb.Controllers
@@ -11,6 +12,10 @@ namespace AirlineWeb.Controllers
         public WebhookSubscriptionController(AirlineDbContext context)
         {
             _context = context;
+        }
+
+        public ActionResult<WebhookSubscriptionReadDto> CreateSubscription(WebhookSubscriptionCreateDto webhookSubscription){
+            
         }
     }
 }
