@@ -33,7 +33,7 @@ namespace AirlineWeb.Controllers
                    return BadRequest(ex.Message);
                 }
                 var webhookSubscriptionReadDto = _mapper.Map<WebhookSubscriptionReadDto>(subscription);
-                
+                return NoContent();//TODO replace with 201
            } else {
                return NoContent();
            }
