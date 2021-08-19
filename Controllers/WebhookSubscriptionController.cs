@@ -19,6 +19,13 @@ namespace AirlineWeb.Controllers
             _mapper = mapper;
         }
 
+        //[HttpGet("{secret}", Name = nameof(GetSubscriptionBySecret))]
+        [HttpGet("{secret}", Name = "GetSubscriptionBySecret")]
+        public ActionResult<WebhookSubscriptionReadDto> GetSubscriptionBySecret(string secret){
+            var subscription = _context.WebhookSubscriptions.FirstOrDefault(x=>x.Secret == secret);
+            if (subscription == null) return NotFound();
+            return Ok(_mapper.Map<WebhookSubscriptionReadDto>(subscription));
+        }
         [HttpPost] public ActionResult<WebhookSubscriptionReadDto> CreateSubscription(WebhookSubscriptionCreateDto webhookSubscriptionCreateDto){
            var subscription = _context.WebhookSubscriptions.FirstOrDefault(x => x.WebhookURI == webhookSubscriptionCreateDto.WebhookURI);
            if (subscription == null){
@@ -33,7 +40,7 @@ namespace AirlineWeb.Controllers
                    return BadRequest(ex.Message);
                 }
                 var webhookSubscriptionReadDto = _mapper.Map<WebhookSubscriptionReadDto>(subscription);
-                return NoContent();//TODO replace with 201
+                return CreatedAtRoute(nameof(this.GetSubscriptionBySecret), new { secret = webhookSubscriptionReadDto.Secret}, webhookSubscriptionReadDto);
            } else {
                return NoContent();
            }
