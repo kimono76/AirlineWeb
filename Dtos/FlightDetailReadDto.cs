@@ -1,7 +1,7 @@
 
 namespace AirlineWeb.Dtos
 {
-    public class FligtDetailReadDto
+    public class FlightDetailReadDto
     {
         public int Id { get; set; }
         
