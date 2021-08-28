@@ -1,7 +1,7 @@
 
 namespace AirlineWeb.Dtos
 {
-    public class FligtDetailUpdateDto
+    public class FlightDetailUpdateDto
     {
         
         public string FlightCode { get; set; }
