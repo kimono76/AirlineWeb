@@ -41,5 +41,13 @@ namespace AirlineWeb.Controllers
                     new{flightCode= flightDetailReadDto.FlightCode},flightDetailReadDto);
             } else return NoContent();
         }
+        [HttpPut("{id}")]
+        public ActionResult UpdateFlightDetail(int id,FlightDetailUpdateDto flightDetailUpdateDto){
+            var flight= _context.FlightDetails.FirstOrDefault(x=>x.Id == id);
+            if (flight is null) return NotFound();
+            _mapper.Map(flightDetailUpdateDto, flight);
+            _context.SaveChanges();
+            return NoContent();
+        }
     }
 }
