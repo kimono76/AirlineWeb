@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <title>Panamerican Austrlian Airways - WebHook Registration</title>
+</head>
+<body>
+   <div class="container">
+       <h1 class="display-3 text-center my-4">Panamerican Austrlian Airways</h1>
+       <h3 class="display-5 text-center my-4">WebHook Registration</h3>
+       <div id="alertSuccess" class="alert alert-success">
+            <strong>Success</strong> <label id="successMessage">WebHook Registered</label>
+       </div>
+       <div id="alertDanger" class="alert alert-danger">
+            <strong>Danger</strong> <label id="dangerMessage">Check the log files</label>
+       </div>
+        <div id="registration">
+            <div class="form-group">
+                <label for="webhook">Enter your webhook URI</label>
+                <input class="form-control form-control-lg" type="text" id="webhook" placeholder="Enter URI">
+                <small class="form-text form-text-muted">Your webhook URI will not be shared</small> 
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="webhooktype">WebHook Type</label>
+            <select class="form-control" id="webhooktype">
+                <option>Price Change</option>
+                <option>Seat availability</option>
+                <option>Flight Delays and Disruptions</option>
+            </select>
+        </div>
+        <div>
+            <button id="register" class="btn btn-primary btn-block my-4" type="submit">Register</button>
+        </div>
+   </div> 
+</body>
+</html>
