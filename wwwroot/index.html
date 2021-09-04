@@ -36,4 +36,41 @@
         </div>
    </div> 
 </body>
+<script>
+    var registerButton= document.getElementById('register')
+    //var statusLabel= document.getElementById('statusLabel')
+    var webhookURI = document.getElementById('webhook')
+    var webhookType = document.getElementById('webhooktype')
+    var successBox = document.getElementById('alertSuccess')
+    var dangerBox = document.getElementById('alertDanger')
+    var dangerMessage = document.getElementById('dangerMessage')
+    var successMessage = document.getElementById('successMessage')
+
+    successBox.style.display="none" 
+    dangerBox.style.display="none"
+    
+    registerButton.onclick= ()=>{
+        if (webhookURI.value ==="") {
+            dangerMessage.innerHTML = "Must enter an URI"
+            dangerBox.style.display="block"
+        } else {
+            (async()=>{
+                const rawResponse = await fetch('https://localhost:5001/api/webhooksubscription',{
+                    method: 'POST',
+                    body: JSON.stringify({
+                        webhookURI:webhookURI.value,
+                        webhookType: webhookType.value
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                const content = await rawResponse.json()
+                successMessage.innerHTML = `Webhook registered. Use secret:${content.secret} to validate inbound`
+                successBox.style.display="block"
+                console.log(content)
+            })()
+        }
+    }
+</script>
 </html>
