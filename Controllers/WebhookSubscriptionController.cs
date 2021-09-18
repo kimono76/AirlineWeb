@@ -31,7 +31,7 @@ namespace AirlineWeb.Controllers
            if (subscription == null){
                subscription= _mapper.Map<WebhookSubscription>(webhookSubscriptionCreateDto);
                subscription.Secret = Guid.NewGuid().ToString();
-               subscription.WebhookPublisher = "PanAus";
+               subscription.WebhookPublisher = "PanAustralian";
                try
                {
                    _context.WebhookSubscriptions.Add(subscription);
