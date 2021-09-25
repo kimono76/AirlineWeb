@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using AirlineWeb.Data;
 using AirlineWeb.Dtos;
+using AirlineWeb.MessageBus;
 using AirlineWeb.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,13 @@ namespace AirlineWeb.Controllers
     {
         private readonly AirlineDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IntMessageBusClient _messageBusClient;
 
-        public FlightsController(AirlineDbContext context, IMapper mapper)
+        public FlightsController(AirlineDbContext context, IMapper mapper, IntMessageBusClient messageBusClient)
         {
             _context = context;
             _mapper = mapper;
+            _messageBusClient= messageBusClient;
         }
 
         [HttpGet("{flightCode}", Name="GetFlightDetailsByCode")]
@@ -45,9 +48,25 @@ namespace AirlineWeb.Controllers
         public ActionResult UpdateFlightDetail(int id,FlightDetailUpdateDto flightDetailUpdateDto){
             var flight= _context.FlightDetails.FirstOrDefault(x=>x.Id == id);
             if (flight is null) return NotFound();
+            decimal oldPrice= flight.Price;
             _mapper.Map(flightDetailUpdateDto, flight);
-            _context.SaveChanges();
-            return NoContent();
+            try
+            {
+                _context.SaveChanges();
+                if (oldPrice != flight.Price){
+                    Console.WriteLine("PRICE CHANGED - Place message on BUS");
+                    var notificationMessageDto= new NotificationMessageDto{
+                        WebhookType="pricechange",
+                        OldPrice= oldPrice,
+                        NewPrice=flight.Price,
+                        FlightCode=flight.FlightCode,
+                    };
+                    _messageBusClient.SendMessage(notificationMessageDto);
+                    } else Console.WriteLine("NO price change");
+                return NoContent(); 
+            } catch (System.Exception ex) {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
