@@ -26,8 +26,8 @@
         <div class="form-group">
             <label for="webhooktype">WebHook Type</label>
             <select class="form-control" id="webhooktype">
-                <option value="priceChange">Price Change</option>
-                <option value="availability">Seat availability</option>
+                <option>priceChange</option>
+                <option>seatAvailability</option>
             </select>
         </div>
         <div>
@@ -49,6 +49,8 @@
     dangerBox.style.display="none"
     
     registerButton.onclick= ()=>{
+        console.log(webhookURI.value)
+        console.log(webhookType.value)
         if (webhookURI.value ==="") {
             dangerMessage.innerHTML = "Must enter an URI"
             dangerBox.style.display="block"
@@ -64,6 +66,7 @@
                         'Content-Type': 'application/json'
                     }
                 })
+    
                 const content = await rawResponse.json()
                 successMessage.innerHTML = `Webhook registered. Use secret:${content.secret} to validate inbound`
                 successBox.style.display="block"
